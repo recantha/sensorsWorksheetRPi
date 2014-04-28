@@ -41,94 +41,46 @@ We connect S (sense/signal) of the line sensor to any GPIO pin. I chose the last
 
 Use a white piece of paper with a black line down the middle. We will use the white as our reflective and black as non-reflective surface to detect. We need to adjust the line detectors sensitivity so that the white and black get different readings. Adjust the screw (potentiometer) in the middle of the line detector so that the red light is lit when the black line is above the sensor, but isn't lit when the white is above the sensor. The sensor part is the end of the line sensor opposite the pins with the two bulbs. You should hold the paper between 1 and 3 centimeters away from the sensor.
 
-| Code                                                                     |
-+--------------------------------------------------------------------------+
-| We know that the line sensor’s sense pin will be HIGH (meaning at 3.3v)  |
-| when the line sensor sees a dark, non-reflective surface (like the black |
-| line). The Pi should read the sense pin (Pin 26) as high during this     |
-| time, so we will make our script print ‘The sensors is seeing a          |
-| black/dark/non-reflective surface’, when the pin reads HIGH/1/TRUE. We   |
-| will print the opposite when the reading isn’t that (else)               |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| \#Import the time module so we can make out program wait for \#a length  |
-| of time                                                                  |
-|                                                                          |
-| import time                                                              |
-|                                                                          |
-| \#Import this module to control the GPIO pins and call it \#GPIO for the |
-| rest of our code                                                         |
-|                                                                          |
-| import RPi.GPIO as GPIO                                                  |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| \#We are using this way to number our pins which matches the \#physical  |
-| pin numbers                                                              |
-|                                                                          |
-| GPIO.setmode(GPIO.BOARD)                                                 |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| \#Set pin 26 as an input so we can read it’s value                       |
-|                                                                          |
-| GPIO.setup(26,GPIO.IN)                                                   |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| try:                                                                     |
-|                                                                          |
-| \#Repeat the next indented block forever                                 |
-|                                                                          |
-| while True:                                                              |
-|                                                                          |
-| \#If the sensor is HIGH, print the following                             |
-|                                                                          |
-| if GPIO.input(26)==1:                                                    |
-|                                                                          |
-| print(‘The sensors is seeing a black/dark/non-reflective surface’)       |
-|                                                                          |
-| \#If not (else), print the following                                     |
-|                                                                          |
-| else:                                                                    |
-|                                                                          |
-| print(‘The sensors is seeing a white/light/reflective surface’)          |
-|                                                                          |
-| \#Wait a second then do the same again                                   |
-|                                                                          |
-| time.sleep(1)                                                            |
-|                                                                          |
-| \#If you press CTRL+C, cleanup and stop                                  |
-|                                                                          |
-| except KeyboardInterrupt:                                                |
-|                                                                          |
-|     GPIO.cleanup()                                                       |
-|                                                                          |
-|     sys.exit()                                                           |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-+--------------------------------------------------------------------------+
-| ​1. Create file line.py by running the following command in the command  |
-| line (either open LXTerminal in the graphical desktop, or log in to the  |
-| kernel): nano line.py                                                    |
-|                                                                          |
-| ​3. Enter the code above code (there’s no need to copy the lines that    |
-| start with a ‘\#’, they’re just there to explain the code to you!        |
-|                                                                          |
-| Once complete “Ctrl + x” then “y” then “enter”                           |
-|                                                                          |
-| ​4. To run the python code “sudo python line.py” \<\< watch the output,  |
-| to close, press Ctrl+C                                                   |
-|                                                                          |
-| \                                                                        |
-+--------------------------------------------------------------------------+
-| Sensors worksheet                                                        |
-+--------------------------------------------------------------------------+
+### Code:
 
-\
+We know that the line sensor’s sense pin will be HIGH (meaning at 3.3v) when the line sensor sees a dark, non-reflective surface (like the ablack line). The Pi should read the sense pin (Pin 26) as high during this time, so we will make our script print ‘The sensors is seeing a black/dark/non-reflective surface’, when the pin reads HIGH/1/TRUE. We will print the opposite when the reading isn’t that.
+```
+#Import the time module so we can make out program wait for a length of time
+import time
+#Import this module to control the GPIO pins and call it GPIO for the rest of our code
+import RPi.GPIO as GPIO
 
-Sensors worksheet
+#Set the numbers we'll use to identify the pins as the physical pin numbers
+GPIO.setmode(GPIO.BOARD)
+
+#Set pin 26 as an input so we can read it’s value
+GPIO.setup(26,GPIO.IN)
+
+try:
+
+	#Repeat the next indented block forever
+	while True:
+    
+		#If the sensor is HIGH, print the following
+		if GPIO.input(26)==1:
+			print(‘The sensors is seeing a black/dark/non-reflective surface’)
+            
+		#If not (else), print the following
+		else:
+			print(‘The sensors is seeing a white/light/reflective surface’)
+            
+		#Wait a second then do the same again
+		time.sleep(1)
+        
+#If you press CTRL+C, cleanup and stop
+except KeyboardInterrupt:
+	GPIO.cleanup()
+	sys.exit()
+```
+
+1. Create file line.py by running the following command in the command line (either open LXTerminal in the graphical desktop, or log in to the kernel): ```nano line.py```
+2. Enter the code above code (there’s no need to copy the lines that start with a ‘\#’, they’re just there to explain the code to you! Once you've copied it, type “Ctrl + x” then “y” then “enter” to save.
+3. To run the python code ```sudo python line.py``` watch the output (hold white and black objects 1-3cm above the sensor), to close, press Ctrl+C
 
 **Project**
 
