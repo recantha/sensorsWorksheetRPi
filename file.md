@@ -1,114 +1,46 @@
+## Sensors worksheet
+By Zachary Igielman
+<br><br>
+![](/RASPBERRY PI LOGO)
+<br>
 This worksheet will teach you how to use three different types of
 sensors with the GPIO pins of the raspberry pi. You will learn how to
 wire each one up, and read it’s value(s) in python code.
 
-Sensors worksheet
-
-**Project**
-
+<br>**Project:**
 Line detector 
 
-**Description**
-
+**Description:**
 In this project you will learn how to read a digital line
 detector/reflectance sensor
 
-\
+**Tools required:**
 
-Tools required
-
-**□****Raspberry Pi + SD card**
-
+□ Raspberry Pi + SD card
 □ 4tronix digital line sensor
-
-\
-
-**□****Keyboard**
-
-****\
-
+□ Keyboard
 □ 3 x f/f jumper wires
-
-\
-
-**□****Monitor + HDMI cable**
-
-****\
-
-****\
-
-**□****Power supply**
-
-****\
-
-****\
-
-****\
-
-Connecting line detector:
-
-\
+□ Monitor + HDMI cable
+□ Power supply
+<br><br><br>
+### Connecting line detector:
 
 Firstly, we will connect the line sensor to the Raspberry Pi like so:
 
-+--------------------------------------------------------------------------+
-| \                                                                        |
-+--------------------------------------------------------------------------+
-| Why connect it like this?                                                |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-|                                                                          |
-| **Use female to female (hole/slot both ends) for all of these            |
-| connections. Make sure pin is fully slid into wire, firmly.**            |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **We connect the G (meaning ground) pin of the line sensor to the GND    |
-| (meaning ground) pin of the Raspberry Pi. On the sensor, that is the     |
-| first pin along, and on the pi, the GND pin I used was Pin \#20. We also |
-| connect V+ (meaning voltage+) pin on the line sensor to 3V3 (3.3 volts)  |
-| on the Pi. These pins are to power it.**                                 |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **We connect S (sense/signal) of the line sensor to any GPIO pin. I      |
-| chose the last pin on the Pi (Pin \#26). This will get one reading       |
-| (either high (1 or true) or low (0 or false), meaning 3.3 volts or 0     |
-| volts) when the sensor is pointing towards a dark, non reflective (e.g.  |
-| black) surface, and the opposite reading when pointing towards a light,  |
-| reflective (e.g. white) surface.**                                       |
-|                                                                          |
-| ****\                                                                    |
-+--------------------------------------------------------------------------+
-| Adjusting sensitivity of line sensor:                                    |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-|                                                                          |
-| **You should all have a white piece of paper with a black line down the  |
-| middle. We will use the white as our reflective and black as             |
-| non-reflective surface to detect. We need to adjust the line detectors   |
-| sensitivity so that the white and black get different readings.**        |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **Adjust the screw (potentiometer) in the middle of the line detector so |
-| that the red light is lit when the black line is above the sensor, but   |
-| isn't lit when the white is above the sensor.**                          |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **The sensor part is the end of the line sensor opposite the pins with   |
-| the two bulbs. You should hold the paper between 1 and 3 centimeters     |
-| away from the sensor.**                                                  |
-|                                                                          |
-| ****\                                                                    |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-+--------------------------------------------------------------------------+
+![](/PICTIRE OF LINE DETECTOR CIRCUIT DIAGRAM)
 
-\
+Use female to female (hole/slot both ends) for all of these connections. Make sure pin is fully slid into wire, firmly.
 
-+--------------------------------------------------------------------------+
+### Why connect it like this?
+
+We connect the G (meaning ground) pin of the line sensor to the GND (meaning ground) pin of the Raspberry Pi. On the sensor, that is the first pin along, and on the pi, the GND pin I used was Pin \#20. We also connect V+ (meaning VCC) pin on the line sensor to 3V3 (3.3 volts) on the Pi. These pins are to power it.
+
+We connect S (sense/signal) of the line sensor to any GPIO pin. I chose the last GPIO pin on the Pi (Pin \#26). This will get one reading (either high or low, meaning 3.3 volts or 0 volts) when the sensor is pointing towards a dark, non reflective (e.g. black) surface, and the other reading when the sensor is pointing towards a light, reflective (e.g. white) surface.
+
+### Adjusting sensitivity of line sensor:
+
+Use a white piece of paper with a black line down the middle. We will use the white as our reflective and black as non-reflective surface to detect. We need to adjust the line detectors sensitivity so that the white and black get different readings. Adjust the screw (potentiometer) in the middle of the line detector so that the red light is lit when the black line is above the sensor, but isn't lit when the white is above the sensor. The sensor part is the end of the line sensor opposite the pins with the two bulbs. You should hold the paper between 1 and 3 centimeters away from the sensor.
+
 | Code                                                                     |
 +--------------------------------------------------------------------------+
 | We know that the line sensor’s sense pin will be HIGH (meaning at 3.3v)  |
