@@ -1,7 +1,7 @@
 ## Sensors worksheet
 By Zachary Igielman
 <br><br>
-![](/RASPBERRY PI LOGO)
+![](//Raspi_Colour_R.png)
 <br>
 This worksheet will teach you how to use three different types of
 sensors with the GPIO pins of the raspberry pi. You will learn how to
