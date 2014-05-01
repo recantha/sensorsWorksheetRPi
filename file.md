@@ -82,310 +82,135 @@ except KeyboardInterrupt:
 2. Enter the code above code (there’s no need to copy the lines that start with a ‘\#’, they’re just there to explain the code to you! Once you've copied it, type “Ctrl + x” then “y” then “enter” to save.
 3. To run the python code ```sudo python line.py``` watch the output (hold white and black objects 1-3cm above the sensor), to close, press Ctrl+C
 
-**Project**
-
+<br>**Project**
 Ultrasonic distance measurement
 
 **Description**
-
 In this lesson you will use an HR-SC04 to measure real world distances
 
-\
+**Tools required**
 
-Tools required
-
-**□****Raspberry Pi + SD card**
-
+□ Raspberry Pi + SD card
 □ HR-SC04 Ultrasonic module
-
-\
-
-**□****Keyboard**
-
-****\
-
+□ Keyboard
 □ Mini 170-pt breadboard
-
-\
-
-**□****Monitor + HDMI cable**
-
+□ Monitor + HDMI cable
 □ 8x Male to female jumper wires
-
-\
-
-**□****Power supply**
-
-****\
-
+□ Power supply
 □ 330ohm resistor
-
-\
-
-\
-
-\
-
 □ 470ohm resistor
+<br><br><br>
+### Connecting HR-SC04
 
-\
+Firstly, connect the module like so using the wires, resistors and breadboard:
 
-Connecting HR-SC04
+![](//sonar.png)
 
-+--------------------------------------------------------------------------+
-| **Firstly, connect the module like so using the wires, resistors and     |
-| breadboard:**                                                            |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| \                                                                        |
-+--------------------------------------------------------------------------+
-| Why connect it like this?                                                |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-|                                                                          |
-| Use male to female jumper wires to connect each pin of the sonar to a    |
-| separate row of the breadboard. Connect the row with the VCC connection  |
-| to the Pi’s 5v pin (Pin \#2). We need to connect it to 5v rather than    |
-| 3v3 because the sonar module needs more than 3.3 volts. Connect the row  |
-| with the connection to the sonar’s ground to the Pi’s ground (Pin \#14). |
-| Connect the row with trigger to a GPIO (Pin \#11). Connect the row with  |
-| the connection to echo to another row with a 330-ohm resistor to another |
-| row. Connect a GPIO (Pin \#12) to that row, and also connect that row to |
-| the ground connection row with the 470-ohm resistor. We connect the echo |
-| pin to a GPIO with resistors and ground because the module uses a +5V    |
-| level for a “high” but this is too high for the inputs on the GPIO       |
-| header, which only like 3.3V. In order to ensure the Pi only gets hit    |
-| with 3.3V we can use a basic voltage divider. This is formed with two    |
-| resistors.                                                               |
-|                                                                          |
-| \                                                                        |
-+--------------------------------------------------------------------------+
+### Why connect it like this?
 
-\
+Use male to female jumper wires to connect each pin of the sonar to a separate row of the breadboard.
 
-+--------------------------------------------------------------------------+
-| Code                                                                     |
-+--------------------------------------------------------------------------+
-| We will now code it. The trigger pin is what we set to high to send a    |
-| pulse of sound out of the module. We will make it high for 1us for a 1us |
-| pulse of ultrasonic sound. We will then wait until the pulse returns,    |
-| and time how long the echo pin is high after the pulse has returned. The |
-| echo pin should stay high however long it took the pulse to return. We   |
-| work out from the pulse length, the distance with the following          |
-| formulae:                                                                |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| Distance (a variable in our code that stored the time of the pulse in    |
-| seconds) = elapsed (the variable we store the length of the pulse in     |
-| seconds in) \* 34300 (speed of sound cm/s)                               |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| Half the distance as the pulse had to travel to the object and back and  |
-| we only want one way                                                     |
-|                                                                          |
-| Distance=distance/2                                                      |
-|                                                                          |
-| \                                                                        |
-|                                                                          |
-| print "Distance : %.1f" **%** distance \#print the distance to 1 decimal |
-| place** **                                                               |
-|                                                                          |
-| ****\                                                                    |
-+--------------------------------------------------------------------------+
-| ****\                                                                    |
-|                                                                          |
-| **\#!/usr/bin/python**                                                   |
-|                                                                          |
-| **\# sonar.py**                                                          |
-|                                                                          |
-| **\# Measure distance using the ultrasonic module**                      |
-|                                                                          |
-| **\#**                                                                   |
-|                                                                          |
-| **\# Author : Zachary Igielman**                                         |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Import required Python libraries**                                  |
-|                                                                          |
-| **import time**                                                          |
-|                                                                          |
-| **import RPi.GPIO as GPIO**                                              |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Use physical pin numbers**                                          |
-|                                                                          |
-| **GPIO.setmode(GPIO.BOARD)**                                             |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Define GPIO to use on Pi**                                          |
-|                                                                          |
-| **GPIO\_TRIGGER = 11**                                                   |
-|                                                                          |
-| **GPIO\_ECHO    = 12**                                                   |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **print "Ultrasonic Measurement"**                                       |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Set pins as output and input**                                      |
-|                                                                          |
-| **GPIO.setup(GPIO\_TRIGGER,GPIO.OUT)  \# Trigger**                       |
-|                                                                          |
-| **\# Set trigger to False (Low)**                                        |
-|                                                                          |
-| **GPIO.output(GPIO\_TRIGGER, False)**                                    |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Allow module to settle**                                            |
-|                                                                          |
-| **time.sleep(0.5)**                                                      |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Send 10us pulse to trigger**                                        |
-|                                                                          |
-| **GPIO.output(GPIO\_TRIGGER, True)**                                     |
-|                                                                          |
-| **time.sleep(0.00001)**                                                  |
-|                                                                          |
-| **GPIO.output(GPIO\_TRIGGER, False)**                                    |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **start = time.time()**                                                  |
-|                                                                          |
-| **count=time.time()**                                                    |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **GPIO.setup(GPIO\_ECHO,GPIO.IN)      \# Echo**                          |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **while GPIO.input(GPIO\_ECHO)==0 and time.time()-count\<1:**            |
-|                                                                          |
-| **  start = time.time()**                                                |
-|                                                                          |
-| **while GPIO.input(GPIO\_ECHO)==1:**                                     |
-|                                                                          |
-| **  stop = time.time()**                                                 |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Calculate pulse length**                                            |
-|                                                                          |
-| **elapsed = stop-start**                                                 |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Distance pulse travelled in that time is time**                     |
-|                                                                          |
-| **\# multiplied by the speed of sound (cm/s)**                           |
-|                                                                          |
-| **distance = elapsed \* 34300**                                          |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# That was the distance there and back so halve the value**           |
-|                                                                          |
-| **distance = distance / 2**                                              |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **print "Distance : %.1f" % distance**                                   |
-|                                                                          |
-| ****\                                                                    |
-|                                                                          |
-| **\# Reset GPIO settings**                                               |
-|                                                                          |
-| **GPIO.cleanup()**                                                       |
-+--------------------------------------------------------------------------+
-| ​1. Create file sonar.py by running the following command in the command |
-| line (either open LXTerminal in the graphical desktop, or log in to the  |
-| kernel): nano sonar.py                                                   |
-|                                                                          |
-| ​3. Enter the code above code (there’s no need to copy the lines that    |
-| start with a ‘\#’, they’re just there to explain the code to you!        |
-|                                                                          |
-| Once complete “Ctrl + x” then “y” then “enter”                           |
-|                                                                          |
-| ​4. To run the python code “sudo python sonar.py” \<\< watch the output, |
-| to close, press Ctrl+C                                                   |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-+--------------------------------------------------------------------------+
+Connect the row with the VCC connection to the Pi’s 5v pin (Pin \#2). We need to connect it to 5v rather than 3v3 because the sonar module needs more than 3.3 volts. Connect the row with the connection to the sonar’s ground to the Pi’s ground (Pin \#14). Connect the row with trigger to a GPIO (Pin \#11). Connect the row with the connection to echo to another row with a 330-ohm resistor to another row. Connect a GPIO (Pin \#12) to that row, and also connect that row to the ground connection row with the 470-ohm resistor. We connect the echo pin to a GPIO with resistors and ground because the module uses a +5V level for a “high” but this is too high for the inputs on the GPIO header, which only like 3.3V. In order to ensure the Pi only gets hit with 3.3V we can use a basic voltage divider. This is formed with two resistors.
 
-\
+### Code
 
-\
+We will now code it. The trigger pin is what we set to high to send a pulse of sound out of the module. We will make it high for 1us for a 1us pulse of ultrasonic sound. We will then wait until the pulse returns, and time how long the echo pin is high after the pulse has returned. The echo pin should stay high however long it took the pulse to return. We work out from the pulse length, the distance with the following formulae:
 
-Sensors worksheet
+Distance (a variable in our code that stored the time of the pulse in seconds) = elapsed (the variable we store the length of the pulse in seconds in) \* 34300 (speed of sound cm/s)
+
+We then half the distance as the pulse had to travel to the object and back and we only want one way
+
+Distance=distance/2
+
+print "Distance : %.1f" **%** distance \#print the distance to 1 decimal place** **                                                     
+
+### Program
+```
+# Import required Python libraries
+import time
+import RPi.GPIO as GPIO
+
+# Use physical pin numbers
+GPIO.setmode(GPIO.BOARD)
+
+# Define GPIO to use on Pi
+GPIO_TRIGGER = 11
+GPIO_ECHO = 12
+
+print "Ultrasonic Measurement"
+
+# Set pins as output and input
+GPIO.setup(GPIO_TRIGGER,GPIO.OUT)  # Trigger
+GPIO.setup(GPIO_ECHO,GPIO.IN)      # Echo
+
+try:
+	#repeat the next indented block forever
+	while True:
+		# Set trigger to False (Low)
+		GPIO.output(GPIO_TRIGGER, False)
+
+		# Allow module to settle
+		time.sleep(0.5)
+
+		# Send 10us pulse to trigger
+		GPIO.output(GPIO_TRIGGER, True)
+		time.sleep(0.00001)
+		GPIO.output(GPIO_TRIGGER, False)
+		start = time.time()
+		while GPIO.input(GPIO_ECHO)==0:
+		  start = time.time()
+
+		while GPIO.input(GPIO_ECHO)==1:
+		  stop = time.time()
+
+		# Calculate pulse length
+		elapsed = stop-start
+
+		# Distance pulse travelled in that time is time
+		# multiplied by the speed of sound (cm/s)
+		distance = elapsed * 34000
+
+		# That was the distance there and back so halve the value
+		distance = distance / 2
+
+		print "Distance : %.1f" % distance
+#if you press CTRL+C, cleanup and stop
+except KeyboardInterrupt:
+# Reset GPIO settings
+	GPIO.cleanup()
+```
+
+1. Create file sonar.py by running the following command in the command line (either open LXTerminal in the graphical desktop, or log in to the kernel): ```nano sonar.py```
+2. Enter the code above code (there’s no need to copy the lines that start with a ‘\#’, they’re just there to explain the code to you! Once complete, “Ctrl + x” then “y” then “enter”
+3. To run the python code ```sudo python sonar.py``` and watch the output try moving an object towards and away from the sensor), to close, press Ctrl+C
 
 **Project**
-
 MMA7455 i2c accelerometer 
 
 **Description**
-
 In this project you will learn how to read an MMA7455 accelerometer
 using i2c to communicate with the Pi
 
-\
+**Tools required**
 
-Tools required
-
-**□ Raspberry Pi + SD card**
-
+□ Raspberry Pi + SD card
 □ MMA7455 accelerometer module
-
-\
-
-**□ Keyboard**
-
-****\
-
+□ Keyboard
 □ 5 x f/f jumper wires
+□ Monitor + HDMI cable
+□ Ethernet cable/USB wireless dongle already set up for the internet
+□ Power supply
+□ Internet router
 
-\
-
-**□ Monitor + HDMI cable**
-
-**□**Ethernet cable/USB wireless dongle already set up for the internet
-
-\
-
-**□ Power supply**
-
-****\
-
-**□**Internet router
-
-\
-
-**Connecting accelerometer:**
-
-****\
+### Connecting accelerometer:
 
 Firstly, we will connect the accelerometer to the Raspberry Pi like so:
 
-+--------------------------------------------------------------------------+
-| \                                                                        |
-+--------------------------------------------------------------------------+
-| Why connect it like this?                                                |
-+--------------------------------------------------------------------------+
-| \                                                                        |
-|                                                                          |
-| **Use female to female (hole/slot both ends) for all of these            |
-| connections. Make sure pin is fully slid into wire, firmly.**            |
+![](//wiring%20mma7455%20pic.jpg)
+
+### Why connect it like this?
+
+Use female to female (hole/slot both ends) for all of these connections. Make sure pin is fully slid into wire, firmly.**            |
 |                                                                          |
 | ****\                                                                    |
 |                                                                          |
