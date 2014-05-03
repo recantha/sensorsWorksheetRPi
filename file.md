@@ -1,7 +1,7 @@
 ## Sensors worksheet
 By Zachary Igielman
 <br><br>
-![](//Raspi_Colour_R.png)
+<img src="img/Raspi_Colour_R.png"/>
 <br>
 This worksheet will teach you how to use three different types of
 sensors with the GPIO pins of the raspberry pi. You will learn how to
@@ -27,7 +27,7 @@ detector/reflectance sensor
 
 Firstly, we will connect the line sensor to the Raspberry Pi like so:
 
-![](/PICTIRE OF LINE DETECTOR CIRCUIT DIAGRAM)
+<img src="img/line.png"/>
 
 Use female to female (hole/slot both ends) for all of these connections. Make sure pin is fully slid into wire, firmly.
 
@@ -104,7 +104,7 @@ In this lesson you will use an HR-SC04 to measure real world distances
 
 Firstly, connect the module like so using the wires, resistors and breadboard:
 
-![](//sonar.png)
+<img src="img/sonar.png"/>
 
 ### Why connect it like this?
 
@@ -206,7 +206,7 @@ using i2c to communicate with the Pi
 
 Firstly, we will connect the accelerometer to the Raspberry Pi like so:
 
-![](//wiring%20mma7455%20pic.jpg)
+<img src="img/wiringmma7455.jpg"/>
 
 ### Why connect it like this?
 
