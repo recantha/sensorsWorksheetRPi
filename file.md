@@ -220,40 +220,23 @@ We connect SDA of the module to SDA of the pi (pin \#3) and SCL of the module to
 
 ### Adjusting raspbian to work with the accelerometer:
 
-On the Pi, I2C is disabled by default. To enable it, we need to change a file. To open this file, run the command:
+On the Pi, I2C is disabled by default. To enable it, we need to change a file. To open this file, run the command: ```sudo nano /etc/modprobe.d/raspi-blacklist.conf```
 
-```sudo nano /etc/modprobe.d/raspi-blacklist.conf
-```
+Add a hash before the blacklist ```i2c-bcm2708``` so that it becomes ```#i2c-bcm2708```
 
-Add a hash before th I2C line. It should look like this afterwards:
-
-```# blacklist spi and i2c by default (many users don't need them)
-
-blacklist spi-bcm2708
-#blacklist i2c-bcm2708
-```
 Once complete “Ctrl + x” then “y” then “enter”
 
 The next thing to do is add the I2C module to the kernel. Run the command:
 
 ```sudo nano /etc/modules
-```
-Add the line ```i2c-dev``` to them bottom of that file so that it looks like this:
-```# /etc/modules: kernel modules to load at boot time.
-# This file contains the names of kernel modules that should be loaded
-# at boot time, one per line. Lines beginning with "\#" are ignored.
-# Parameters can be specified after the module name.
+```Add the line ```i2c-dev```
 
-snd-bcm2835
-i2c-dev
-```
 Once complete “Ctrl + x” then “y” then “enter”
 
 We need to install two packages, install them with this command:
 
 ```sudo apt-get install i2c-tools python-smbus
-```
-If that fails, try running:
+```If that fails, try running:
 
 ```sudo apt-get update
 ```and try again
@@ -261,8 +244,7 @@ If that fails, try running:
 To configure the software, we will add the Pi user to the I2C access group, by running the command:
 
 ```sudo adduser pi i2c
-```
-Now run:
+```Now run:
 
 ```sudo reboot
 ```to reboot.
@@ -272,42 +254,75 @@ To test the software, run the command:
 ```to see if there is anything connected.
 
 If the MMA7455 accelerometer module is connected correctly and working, it should respond with this:
-```     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+```
+0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+
 00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
 10: -- -- -- -- -- -- -- -- -- -- -- -- -- 1d -- -- 
+
 20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
 30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
 40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
+
 50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
 60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+
 70: -- -- -- -- -- -- -- --   
 ```
+
 If nothing is connected or it is incorrectly connected, it will respond with this:
-```0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-00:          -- -- -- -- -- -- -- -- -- -- -- -- --
-10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-70: -- -- -- -- -- -- -- --
 ```
-If this happens, don’t panic. Try this command:
-```i2cdetect -y 1
-```If that responds as if the MMA7455 accelerometer module is connected correctly, then it just means you have a new raspberry pi where the i2c bus is 1 rather than 0 (my code works with either as it detects which is correct before connecting).
+0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+
+00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+70: -- -- -- -- -- -- -- --
+
+```
+
+If this happens, don’t panic. Try this command: ```i2cdetect -y 1```
+
+If that responds as if the MMA7455 accelerometer module is connected correctly, then it just means you have a new raspberry pi where the i2c bus is 1 rather than 0 (my code works with either as it detects which is correct before connecting).
 
 If both i2cdetect -y 1 and i2cdetect -y 0, respond with this:
-```0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+```
+0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+
 00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+
 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
 20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
 30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
 40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
 50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
 60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
 70: -- -- -- -- -- -- -- --
-```Then there’s something wrong with your hardware. Try wiring up the module again.
+```
+
+Then there’s something wrong with your hardware. Try wiring up the module again.
 
 ### Code
 ```
@@ -362,25 +377,30 @@ for a in range(10000):
 Once complete “Ctrl + x” then “y” then “enter”
 3. To run the python code ```python MMA7455.py``` and watch the output (tilt the sensor), to close, press Ctrl+C
 
+### Ideas
 
 Now you know how to connect some different types of sensors to the Pi, and read them with the Pi, you can integrate them into projects or experiments, or transfer what you learnt here for another sensor.
 
-Here are some ideas of what you can do with each sensor.
+Here are some ideas of what you can do with each sensor:
 
-Line detector:
+### Line detector:
 
-CREATE A LINE FOLLOWER – use two line followers next to each other to follow a line, controlling motors to go staright when the lines in the middle and turn appropriately when it’s not
+**CREATE A LINE FOLLOWER** – use two line followers next to each other to follow a line, controlling motors to go staright when the lines in the middle and turn appropriately when it’s not
 
-Ultrasonic diatnce sensor:
+### Ultrasonic distance sensor:
 
-CREATE A DIGITAL RULER – make a program that keeps reading and updating the distance, you could make it portable with batteries and use an LCD for a screen
-CREATE AN OBJECT DETECTING ROBOT – this robot culd drive about autonomously, and could stop or drive round objects when it gets too close
+**CREATE A DIGITAL RULER** – make a program that keeps reading and updating the distance, you could make it portable with batteries and use an LCD for a screen
 
-Accelerometer:
+**CREATE AN OBJECT DETECTING ROBOT** – this robot culd drive about autonomously, and could stop or drive round objects when it gets too close
 
-CREATE A DIGITAL SPIRIT LEVEL – keep measuring an outputting the readings from each axis, you could make it portable with batteries and use an LCD for a screen
-CREATE A SELF BALANCING ROBOT – make a two wheeled robot that stands upright because when it starts leaning, it detects it with the accelerometer and drives in that direction to stop it falling and correct it, you could then pull it around on a lead and it’ll follow you
+### Accelerometer:
 
-Contact me if you have any trouble following this tutorial, want help with a project or want to tell me about your project.
-Twitter: @ZacharyIgielman
-Email: ZacharyI123@gmail.com
+**CREATE A DIGITAL SPIRIT LEVEL** – keep measuring an outputting the readings from each axis, you could make it portable with batteries and use an LCD for a screen
+
+**CREATE A SELF BALANCING ROBOT** – make a two wheeled robot that stands upright because when it starts leaning, it detects it with the accelerometer and drives in that direction to stop it falling and correct it, you could then pull it around on a lead and it’ll follow you
+
+**Contact me if you have any trouble following this tutorial, want help with a project or want to tell me about your project.**
+
+**Twitter: @ZacharyIgielman**
+
+**Email: ZacharyI123@gmail.com**
