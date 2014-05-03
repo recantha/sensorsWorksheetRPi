@@ -239,8 +239,7 @@ The next thing to do is add the I2C module to the kernel. Run the command:
 ```sudo nano /etc/modules
 ```
 Add the line ```i2c-dev``` to them bottom of that file so that it looks like this:
-```
-# /etc/modules: kernel modules to load at boot time.
+```# /etc/modules: kernel modules to load at boot time.
 # This file contains the names of kernel modules that should be loaded
 # at boot time, one per line. Lines beginning with "\#" are ignored.
 # Parameters can be specified after the module name.
