@@ -379,25 +379,25 @@ Once complete “Ctrl + x” then “y” then “enter”
 
 ### Ideas
 
-Now you know how to connect some different types of sensors to the Pi, and read them with the Pi, you can integrate them into projects or experiments, or transfer what you learnt here for another sensor.
+Now you know how to connect some different types of sensors to the Pi, and read them with the Pi, you can integrate them into projects or experiments, or transfer what you learnt here to another sensor.
 
 Here are some ideas of what you can do with each sensor:
 
 ### Line detector:
 
-**CREATE A LINE FOLLOWER** – use two line followers next to each other to follow a line, controlling motors to go staright when the lines in the middle and turn appropriately when it’s not
+**CREATE A LINE FOLLOWER** – use two line followers next to each other to follow a line, controlling motors to go straight when the line is in the middle and turn appropriately when it’s not
 
 ### Ultrasonic distance sensor:
 
 **CREATE A DIGITAL RULER** – make a program that keeps reading and updating the distance, you could make it portable with batteries and use an LCD for a screen
 
-**CREATE AN OBJECT DETECTING ROBOT** – this robot culd drive about autonomously, and could stop or drive round objects when it gets too close
+**CREATE AN OBJECT DETECTING ROBOT** – this robot could drive about autonomously, and could stop or drive around objects when it gets too close
 
 ### Accelerometer:
 
-**CREATE A DIGITAL SPIRIT LEVEL** – keep measuring an outputting the readings from each axis, you could make it portable with batteries and use an LCD for a screen
+**CREATE A DIGITAL SPIRIT LEVEL** – keep measuring and outputting the readings from each axis, you could make it portable with batteries and use an LCD for a screen
 
-**CREATE A SELF BALANCING ROBOT** – make a two wheeled robot that stands upright because when it starts leaning, it detects it with the accelerometer and drives in that direction to stop it falling and correct it, you could then pull it around on a lead and it’ll follow you
+**CREATE A SELF BALANCING ROBOT** – make a two-wheeled robot that stands upright because when it starts leaning, it detects it with the accelerometer and drives in that direction to stop it falling and corrects itself, you could then pull it around on a lead and it’ll follow you
 
 **Contact me if you have any trouble following this tutorial, want help with a project or want to tell me about your project.**
 
